@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>site login teste</title>
+
+</html>
+
+<body>
+    <main>
+
+        <section class="area-caixa-login">
+            <div class="container" id="container">
+
+                <div class="form-side caixa-login">
+                    <form id="form-login">
+                        <h1>Login</h1>
+
+                        <label for="email-login">Email</label>
+                        <input type="email" name="email-login" id="email-login" placeholder="Digite seu Email">
+
+                        <label for="senha-login">Senha</label>
+                        <input type="password" name="senha" id="senha-login" placeholder="Digite sua senha">
+
+                        <button class="btn-login" type="submit">Entrar</button>
+                        <button type="button" class="btn-switch btn-switch-cadastro">Criar conta</button>
+                        <p class="mensagem-status" id="mensagem-login"></p>
+                    </form>
+                </div>
+
+                <div class="form-side caixa-cadastro">
+                    <form id="form-cadastro">
+                        <h1>Criar Conta</h1>
+
+                        <label for="nome-cadastro">Nome</label>
+                        <input type="text" name="nome" id="nome-cadastro" placeholder="Seu nome completo">
+
+                        <label for="email-cadastro">Email</label>
+                        <input type="email" name="email-cadastro" id="email-cadastro" placeholder="Digite seu Email">
+
+                        <label for="senha-cadastro">Senha</label>
+                        <input type="password" name="senha" id="senha-cadastro" placeholder="Digite sua senha">
+
+                        <button class="btn-login" type="submit">Criar Conta</button>
+                        <button type="button" class="btn-switch btn-switch-login">Já tenho conta</button>
+                        <p class="mensagem-status" id="mensagem-cadastro"></p>
+                    </form>
+                </div>
+
+                <div class="overlay-container">
+                    <div class="overlay">
+                        <div class="overlay-painel overlay-esquerdo">
+                            <h2>Bem-vindo De Volta!</h2>
+                            <p>Entre com seu email e senha pra continuar de onde parou.</p>
+                            <button class="btn-outline" id="btn-ir-login">Entrar</button>
+                        </div>
+
+                        <div class="overlay-painel overlay-direita">
+                            <h2>Novo Por Aqui?</h2>
+                            <p>Crie sua conta em menos de um minuto e comece agora.</p>
+                            <button class="btn-outline" id="btn-ir-cadastro">Criar Conta</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+    <script src="login.js"></script>
+</body>

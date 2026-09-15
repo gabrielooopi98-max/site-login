@@ -179,7 +179,7 @@ input:focus {
     transition: transform 0.6s ease-in-out;
     z-index: 100;
     background: linear-gradient(135deg, #111827 0%, #000000 50%, #0f172a 100%);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .container.active-cadastro .overlay-container,
@@ -236,7 +236,7 @@ input:focus {
     padding: 0 44px;
     color: white;
     transition: transform 0.6s ease-in-out;
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
 }
 
 .overlay-painel::before {
@@ -248,7 +248,7 @@ input:focus {
     width: 72px;
     height: 4px;
     border-radius: 999px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.9), rgba(255,255,255,0.2));
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2));
 }
 
 .overlay-esquerdo {
@@ -340,4 +340,68 @@ input:focus {
     font-size: 0.82rem;
     margin-top: 20px;
     min-height: 18px;
+}
+
+@media(max-width: 768px) {
+    #container {
+        min-height: 1000px;
+    }
+
+    .form-side {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        min-height: 500px;
+    }
+
+    .form-side form {
+        height: auto;
+        min-height: 500px;
+    }
+
+    .caixa-cadastro {
+        left: auto;
+    }
+
+    .overlay-container {
+        top: 500px;
+        left: 0;
+        width: 100%;
+        height: 500px;
+        transform: translateX(0);
+    }
+
+    .container.active-cadastro .overlay-container,
+    .container.mostrar-cadastro .overlay-container {
+        transform: translateY(-100%);
+    }
+
+    .overlay {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 200%;
+        transform: translateY(0);
+    }
+
+    .container.active-cadastro .overlay,
+    .container.mostrar-cadastro .overlay {
+        transform: translateY(-50%);
+    }
+
+    .overlay-painel {
+        left: 0;
+        width: 100%;
+        height: 50%;
+    }
+
+    .overlay-esquerdo {
+        top: 50%;
+    }
+
+    .overlay-direita {
+        top: 0;
+    }
 }

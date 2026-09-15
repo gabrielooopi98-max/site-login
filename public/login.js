@@ -23,6 +23,28 @@ if (btnSwitchLogin) {
     btnSwitchLogin.addEventListener('click', mostrarLogin);
 }
 
+const CHAVE_USUARIOS = 'site-login-usuarios';
+
+function lerUsuarios() {
+    try {
+        return JSON.parse(localStorage.getItem(CHAVE_USUARIOS) || '[]');
+    } catch (erro) {
+        return [];
+    }
+}
+
+function salvarUsuarios(usuarios) {
+    localStorage.setItem(CHAVE_USUARIOS, JSON.stringify(usuarios));
+}
+
+async function gerarHash(valor) {
+    const dados = new TextEncoder().encode(valor);
+    const hash = await crypto.subtle.digest('SHA-256', dados);
+    return Array.from(new Uint8Array(hash))
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('');
+}
+
 // --- Criar conta ---
 document.getElementById('form-cadastro').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -32,33 +54,25 @@ document.getElementById('form-cadastro').addEventListener('submit', async (e) =>
     const senha = document.getElementById('senha-cadastro').value;
     const mensagem = document.getElementById('mensagem-cadastro');
 
-    try {
-        const resposta = await fetch('/cadastro', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome, email, senha })
-        });
+    const usuarios = lerUsuarios();
+    const emailNormalizado = email.trim().toLowerCase();
 
-        const dados = await resposta.json();
-
-        if (resposta.ok) {
-            mensagem.textContent = dados.mensagem;
-            mensagem.style.color = '#2E5443';
-            document.getElementById('form-cadastro').reset();
-
-            // depois de 1.2s, volta pro painel de login já com o overlay certo
-            setTimeout(() => {
-                container.classList.remove('mostrar-cadastro');
-                mensagem.textContent = '';
-            }, 1200);
-        } else {
-            mensagem.textContent = dados.erro;
-            mensagem.style.color = '#B3261E';
-        }
-    } catch (erro) {
-        mensagem.textContent = 'Não foi possível conectar ao servidor.';
+    if (usuarios.some(usuario => usuario.email === emailNormalizado)) {
+        mensagem.textContent = 'Já existe uma conta com esse email.';
         mensagem.style.color = '#B3261E';
+        return;
     }
+
+    usuarios.push({ nome: nome.trim(), email: emailNormalizado, senha: await gerarHash(senha) });
+    salvarUsuarios(usuarios);
+    mensagem.textContent = 'Conta criada com sucesso! Faça login.';
+    mensagem.style.color = '#2E5443';
+    document.getElementById('form-cadastro').reset();
+
+    setTimeout(() => {
+        container.classList.remove('mostrar-cadastro');
+        mensagem.textContent = '';
+    }, 1200);
 });
 
 // --- Login ---
@@ -69,26 +83,15 @@ document.getElementById('form-login').addEventListener('submit', async (e) => {
     const senha = document.getElementById('senha-login').value;
     const mensagem = document.getElementById('mensagem-login');
 
-    try {
-        const resposta = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, senha })
-        });
+    const usuarios = lerUsuarios();
+    const usuario = usuarios.find(item => item.email === email.trim().toLowerCase());
+    const senhaCorreta = usuario && usuario.senha === await gerarHash(senha);
 
-        const dados = await resposta.json();
-
-        if (resposta.ok) {
-            mensagem.textContent = dados.mensagem;
-            mensagem.style.color = '#2E5443';
-            // aqui é onde você redirecionaria pra uma página interna, por exemplo:
-            // window.location.href = '/dashboard.html';
-        } else {
-            mensagem.textContent = dados.erro;
-            mensagem.style.color = '#B3261E';
-        }
-    } catch (erro) {
-        mensagem.textContent = 'Não foi possível conectar ao servidor.';
+    if (senhaCorreta) {
+        mensagem.textContent = `Bem-vindo, ${usuario.nome}!`;
+        mensagem.style.color = '#2E5443';
+    } else {
+        mensagem.textContent = 'Email ou senha incorretos.';
         mensagem.style.color = '#B3261E';
     }
 });
